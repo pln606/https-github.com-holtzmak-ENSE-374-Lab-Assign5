@@ -14,8 +14,16 @@ public class Order {
 	
 	public Order(Product product, int quantity, Customer customer) {
 		OrderLine orderline = new OrderLine(product, product.getPrice(), quantity);
-		orderList.add(orderline);
+		setOrderLine(orderline);
 		setCustomer(customer);
+	}
+	
+	public void setOrderLine(OrderLine orderline) {
+		orderList.add(orderline);
+	}
+	
+	public LinkedList<OrderLine> getOrderLine() {
+		return orderList;
 	}
 	
 	public void setCustomer(Customer customer) {
