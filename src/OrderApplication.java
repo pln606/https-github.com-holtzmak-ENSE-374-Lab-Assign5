@@ -14,11 +14,12 @@ import Customer.PersonalCustomer;
 import Customer.CorporateCustomer;
 import Order.Order;
 import Order.Product;
+import Order.OrderLine;
 
 
 public class OrderApplication {
 
-	private static boolean importCatalogue(LinkedList<Product> products) throws IOException {
+	private static boolean importCatalogue(LinkedList<Product> productCatalogue) throws IOException {
 
 		String name = "null";
 		Double price = 0.00;
@@ -39,8 +40,8 @@ public class OrderApplication {
 					price = Double.parseDouble(scanIn.next());
 					productID = Integer.parseInt(scanIn.next());
 					scanIn.nextLine();
-					
-					products.add(new Product(name, price, productID));
+
+					productCatalogue.add(new Product(name, price, productID));
 				}
 			}
 
@@ -56,53 +57,65 @@ public class OrderApplication {
 		return true;
 	}
 
-	public static boolean createOrder(LinkedList<Product> products, Customer customer) {
+	public static boolean createOrder(LinkedList<Product> productCatalogue, Customer customer) {
 
 		Scanner scanIn = new Scanner(System.in);
-		
+
 		int productID = -1;
 		int quantity = -1;
+		int numOrders = 0;
 
 		System.out.println("Welcome to the Order System.");
 		System.out.println("Below is the list of products in the catalogue.");
-		
-		for (int i = 0; i < products.size(); i++) {
-			System.out.println("Name: " + products.get(i).getName() + " Price: $" + products.get(i).getPrice() + " Product ID: " + products.get(i).getProductID());
+
+		for (int i = 0; i < productCatalogue.size(); i++) {
+			System.out.println("Name: " + productCatalogue.get(i).getName() + " Price: $" + productCatalogue.get(i).getPrice() + " Product ID: " + productCatalogue.get(i).getProductID());
 		}
-		
-		System.out.println("Please enter the productID you are looking for: ");
-		productID = scanIn.nextInt();
 
-		System.out.println("Please enter amount of products you are looking for: ");
-		quantity = scanIn.nextInt();
+		System.out.println("How many orders would you like to place?");
+		numOrders = Integer.parseInt(scanIn.next());
 
-		for (int i = 0; i < products.size(); i++) {
-			if (products.get(i).getProductID() == productID) {
-				Order newOrder = new Order(products.get(i), quantity, customer);
-				customer.createOrder(newOrder);
-				
-				scanIn.close();
-				return true;
+		for (int j = 0; j < numOrders; j++) {
+			System.out.println("Please enter the productID you are looking for: ");
+			productID = scanIn.nextInt();
+
+			System.out.println("Please enter amount of products you are looking for: ");
+			quantity = scanIn.nextInt();
+
+			for (int i = 0; i < productCatalogue.size(); i++) {
+				if (productCatalogue.get(i).getProductID() == productID) {
+					Order newOrder = new Order(productCatalogue.get(i), quantity, customer);
+					customer.createOrder(newOrder);
+
+				}
 			}
 		}
-		
+
 		scanIn.close();
-		return false;
+		return true;
 	}
 
 	public static void checkoutCustomer(Customer customer) {
-		
+
 		NumberFormat formatter = new DecimalFormat("#0.00");
-		
+
 		Random random = new Random(); 
 		int randomInt = random.nextInt(999999);
+
+		LinkedList<Order> numCustOrders = customer.getOrders();
 		
 		Double price = 0.00;
 
 		System.out.println("Proceeding to checkout. One moment please... ");
+		System.out.println("The products placed for order are:");
+		
+		for (int i = 0; i < numCustOrders.size(); i++) {
+			LinkedList<OrderLine> numCustOrderLines = numCustOrders.get(i).getOrderLine();
+			System.out.println("Name: " + numCustOrderLines.get(0).getProduct().getName() + " Product ID: " + numCustOrderLines.get(0).getProduct().getProductID() + " Quantity: " + numCustOrderLines.get(0).getQuantity());
+		}
 
-		for (int i = 0; i < customer.getOrders().size(); i++) {
-			price = price + customer.getOrders().get(i).calculatePrice();
+		for (int i = 0; i < numCustOrders.size(); i++) {
+			price = price + numCustOrders.get(i).calculatePrice();
 		}
 
 		System.out.println("Your order total comes to: $" + formatter.format(price));
@@ -115,8 +128,8 @@ public class OrderApplication {
 			System.out.println("Sending invoice to: " + ((CorporateCustomer) customer).getContactName());
 		}
 
-		for (int i = 0; i < customer.getOrders().size(); i++) {
-			customer.getOrders().get(i).setOrderID(randomInt);
+		for (int i = 0; i < numCustOrders.size(); i++) {
+			numCustOrders.get(i).setOrderID(randomInt);
 		}
 
 		System.out.println("Your order's ID is: " + randomInt);
@@ -124,8 +137,8 @@ public class OrderApplication {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = new Date();
 
-		for (int i = 0; i < customer.getOrders().size(); i++) {
-			customer.getOrders().get(i).setDateReceived(date);
+		for (int i = 0; i < numCustOrders.size(); i++) {
+			numCustOrders.get(i).setDateReceived(date);
 		}
 
 		System.out.println("Your order was placed on: " + dateFormat.format(date));
@@ -134,9 +147,9 @@ public class OrderApplication {
 	public static void main(String args[]) {
 
 		try {
-			LinkedList<Product> products = new LinkedList<Product>();
+			LinkedList<Product> productCatalogue = new LinkedList<Product>();
 
-			if(importCatalogue(products) == true) {
+			if(importCatalogue(productCatalogue) == true) {
 
 				Scanner scanIn = new Scanner(System.in);
 
@@ -169,7 +182,7 @@ public class OrderApplication {
 
 					System.out.println("Placing an order. One moment please... ");
 
-					if(createOrder(products, personalCustomer) == true) {
+					if(createOrder(productCatalogue, personalCustomer) == true) {
 						checkoutCustomer(personalCustomer);
 					}
 
@@ -191,10 +204,10 @@ public class OrderApplication {
 
 					System.out.println("Placing an order. One moment please... ");
 
-					if(createOrder(products, corporateCustomer) == true) {
+					if(createOrder(productCatalogue, corporateCustomer) == true) {
 						checkoutCustomer(corporateCustomer);
 					}
-					
+
 					break;
 
 				default:
@@ -205,7 +218,7 @@ public class OrderApplication {
 				scanIn.close();
 
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
