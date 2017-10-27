@@ -26,33 +26,38 @@ GENERAL USAGE NOTES
 			-   No changes were made.
 			
 		3.  Class Order
-			-   Now includes a list of OrderLines under the logic that an order may include many Products,
-			and each Product is a line in the order. The OrderLine of an order may be changed, but the products
-			in the Product Catalogue should not. The Products list implemented in OrderApplication
+			-   Now includes a list of OrderLines under the logic that an order may 
+			include many Products, and each Product is a line in the order. The 
+			OrderLine of an order may be changed, but the products in the Product 
+			Catalogue should not. The Products list implemented in OrderApplication
 			is the list used by the program to be the ProductCatalogue.
-			-   Includes an argument constructor to create an OrderLine, and to add that OrderLine to the Order.
+			-   Includes an argument constructor to create an OrderLine, and to 
+			add that OrderLine to the Order.
 			-   Includes a variable Customer to link the order to a specific Customer.
 			
 		4.  Class PersonalCustomer
-			-   Now includes an argument constructor to create an instance of a PersonalCustomer, also includes
-			a call to the superclass, Class Customer, and its constructor.
+			-   Now includes an argument constructor to create an instance of a 
+			PersonalCustomer, also includes a call to the superclass, Class Customer, 
+			and its constructor.
 			
 		5.  Class CorporateCustomer
-			-   Now includes an argument constructor to create an instance of a CorporateCustomer, also includes
-			a call to the superclass, Class Customer, and its constructor.
+			-   Now includes an argument constructor to create an instance of a 
+			CorporateCustomer, also includes a call to the superclass, Class Customer, 
+			and its constructor.
 			
 		6.  Class Customer
-			-   Now includes a list of Orders under the logic that a customer may make many orders.
+			-   Now includes a list of Orders under the logic that a customer may 
+			make many orders.
 			-   Includes an argument constructor for ease of use.
 			
 		7.  Class OrderApplication
-			-   Updated to include the public method checkoutCustomer to generalize the process of processing a 
-			customer's payment.
+			-   Updated to include the public method checkoutCustomer to generalize the 
+			process of processing a customer's payment.
 			
 		8. Class ProductCatalogue
 			-   Now changed to a list of Products created and destroyed in main.
-			-   This was done under the logic that the Product Catalogue shouldn't be modified in main as a real
-			product catalogue shouldn't be modified by the system that uses it.
+			-   This was done under the logic that the Product Catalogue shouldn't be 
+			modified in main as a real product catalogue shouldn't be modified by the system that uses it.
 	
 2.) Requirements
 	
