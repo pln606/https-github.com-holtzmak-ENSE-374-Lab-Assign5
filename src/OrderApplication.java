@@ -1,20 +1,25 @@
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Scanner;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Random;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import Customer.Customer;
 import Customer.PersonalCustomer;
 import Customer.CorporateCustomer;
 import Order.Order;
-import Order.OrderLine;
 import Order.Product;
 
 
 public class OrderApplication {
 
-	private static boolean importCatalogue(LinkedList products) throws IOException {
+	private static boolean importCatalogue(LinkedList<Product> products) throws IOException {
 
 		String name = "null";
 		Double price = 0.00;
@@ -23,15 +28,17 @@ public class OrderApplication {
 		System.out.println("Importing Product Catalogue, please wait a moment...");
 
 		try {
-			Scanner scanIn = new Scanner(Paths.get("productList.csv")).useDelimiter("\\|+");
+			File file = new File("productList.csv");
+			Scanner scanIn = new Scanner(file);
+			scanIn.useDelimiter("\\|");
 
 			while (scanIn.hasNext())
 			{
 				if (scanIn.hasNextLine() == true)
 				{
-					name = scanIn.next().replaceAll("\\n", "|");
-					price = Double.parseDouble(scanIn.next().replaceAll("\\n", "|"));
-					productID = Integer.parseInt(scanIn.next().replaceAll("\\n", "|"));
+					name = scanIn.next().replaceAll("\\n", "");
+					price = Double.parseDouble(scanIn.next().replaceAll("\\n", ""));
+					productID = Integer.parseInt(scanIn.next().replaceAll("\\n", ""));
 
 					products.add(new Product(name, price, productID));
 				}
@@ -43,52 +50,103 @@ public class OrderApplication {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 
 		return true;
 	}
 
-	public static boolean createOrder(LinkedList products, Customer customer) {
+	public static boolean createOrder(LinkedList<Product> products, Customer customer) {
 
 		Scanner scanIn = new Scanner(System.in);
+		
 		int productID = -1;
-		int quantity = 0;
+		int quantity = -1;
 
 		System.out.println("Welcome to the Order System.");
+		System.out.println("Below is the list of products in the catalogue.");
+		
+		for (int i = 0; i < products.size(); i++) {
+			System.out.println("Name: " + products.get(i).getName() + " Price: $" + products.get(i).getPrice() + " Product ID: " + products.get(i).getProductID());
+		}
+		
 		System.out.println("Please enter the productID you are looking for: ");
 		productID = scanIn.nextInt();
 
 		System.out.println("Please enter amount of products you are looking for: ");
 		quantity = scanIn.nextInt();
 
-		ListIterator<Product> listIterator = products.listIterator();
-		while (listIterator.hasNext()) {
-			if (listIterator.next().getProductID() == productID) {
-				Order newOrder = new Order(listIterator.next(), quantity, customer);
+		for (int i = 0; i < products.size(); i++) {
+			if (products.get(i).getProductID() == productID) {
+				Order newOrder = new Order(products.get(i), quantity, customer);
 				customer.createOrder(newOrder);
+				
+				scanIn.close();
+				return true;
 			}
 		}
+		
+		scanIn.close();
+		return false;
+	}
 
-		return true;
+	public static void checkoutCustomer(Customer customer) {
+		
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		
+		Random random = new Random(); 
+		int randomInt = random.nextInt(999999);
+		
+		Double price = 0.00;
+
+		System.out.println("Proceeding to checkout. One moment please... ");
+
+		for (int i = 0; i < customer.getOrders().size(); i++) {
+			price = price + customer.getOrders().get(i).calculatePrice();
+		}
+
+		System.out.println("Your order total comes to: $" + formatter.format(price));
+
+		if (customer.getClass().equals(PersonalCustomer.class)) {
+			System.out.println("Paying with credit card number: " + ((PersonalCustomer) customer).getCreditCardNumber());
+		} 
+
+		if (customer.getClass().equals(CorporateCustomer.class)) {
+			System.out.println("Sending invoice to: " + ((CorporateCustomer) customer).getContactName());
+		}
+
+		for (int i = 0; i < customer.getOrders().size(); i++) {
+			customer.getOrders().get(i).setOrderID(randomInt);
+		}
+
+		System.out.println("Your order's ID is: " + randomInt);
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date date = new Date();
+
+		for (int i = 0; i < customer.getOrders().size(); i++) {
+			customer.getOrders().get(i).setDateReceived(date);
+		}
+
+		System.out.println("Your order was placed on: " + dateFormat.format(date));
 	}
 
 	public static void main(String args[]) {
 
 		try {
 			LinkedList<Product> products = new LinkedList<Product>();
-			
+
 			if(importCatalogue(products) == true) {
 
 				Scanner scanIn = new Scanner(System.in);
 
 				char choice = 0;
 				int creditCardNumber = 0;
+				float creditRating = 0;
+				float discountRating = 0;
 				String name = "null";
 				String address = "null";
 				String contactName = "null";
-				float creditRating = 0;
-				float discountRating = 0;
-				Double price = 0.00;
 
 				System.out.println("Welcome to the Order Application.\nAre you a personal (P) or corporate customer (C)? ");
 				choice = scanIn.next().charAt(0);
@@ -96,82 +154,63 @@ public class OrderApplication {
 				switch (choice)
 				{
 				case 'P':
-					System.out.println("Please enter your credentials\n What is your credit card number?");
+					System.out.println("Please enter your credentials\nWhat is your credit card number? (In the format XXXXXX)");
 					creditCardNumber = scanIn.nextInt();
-					System.out.println("What is your name?");
+					System.out.println("What is your name? (No spaces)");
 					name = scanIn.next();
 					System.out.println("What is your address?");
 					address = scanIn.next();
-					System.out.println("What is your creditRating?");
+					System.out.println("What is your creditRating? (In the format XXX)");
 					creditRating = scanIn.nextFloat();
-					System.out.println("What is your discountRating?");
+					System.out.println("What is your discountRating? (In the format X.XX) ");
 					discountRating = scanIn.nextFloat();
 
 					PersonalCustomer personalCustomer = new PersonalCustomer(creditCardNumber, name, address, creditRating, discountRating);
 
-					System.out.println("Would you like to place an order? (Y/N) ");
-					choice = scanIn.next().charAt(0);
+					System.out.println("Placing an order. One moment please... ");
 
-					switch (choice)
-					{
-					case 'Y':
-						createOrder(products, personalCustomer);
-						break;
-
-					default: 
-						break;
+					if(createOrder(products, personalCustomer) == true) {
+						checkoutCustomer(personalCustomer);
 					}
-					
-					System.out.println("Proceeding to checkout. One moment please... ");
-					
-					ListIterator<Order> listIterator = personalCustomer.getOrders().listIterator();
-					while (listIterator.hasNext()) {
-						price += listIterator.next().calculatePrice();
-					}
-					
-					System.out.println("Your order total comes to: $" + price);
-					
 
 					break;
 
 				case 'C':
-					System.out.println("Please enter your credentials\n What is your contact name?");
+					System.out.println("Please enter your credentials\nWhat is your contact name? (No spaces)");
 					contactName = scanIn.next();
-					System.out.println("What is your name?");
+					System.out.println("What is your name? (No spaces)");
 					name = scanIn.next();
 					System.out.println("What is your address?");
 					address = scanIn.next();
-					System.out.println("What is your creditRating?");
+					System.out.println("What is your creditRating? (In the format XXX)");
 					creditRating = scanIn.nextFloat();
-					System.out.println("What is your discountRating?");
+					System.out.println("What is your discountRating? (In the format X.XX) ");
 					discountRating = scanIn.nextFloat();
 
 					CorporateCustomer corporateCustomer = new CorporateCustomer(contactName, name, address, creditRating, discountRating);
 
-					System.out.println("Would you like to place an order? (Y/N) ");
-					choice = scanIn.next().charAt(0);
+					System.out.println("Placing an order. One moment please... ");
 
-					switch (choice)
-					{
-					case 'Y':
-						createOrder(products, corporateCustomer);
-						break;
-
-					default: 
-						break;
+					if(createOrder(products, corporateCustomer) == true) {
+						checkoutCustomer(corporateCustomer);
 					}
-
+					
 					break;
 
-				default: 
+				default:
+					System.out.println("You have chosen not to input credentials. The application will now close.");
 					break;
 				}
 
+				scanIn.close();
+
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
+		System.out.println("Ending Order Application. Have a nice day!");
 		System.gc();
 	}
 }
