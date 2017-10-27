@@ -11,10 +11,8 @@ GENERAL USAGE NOTES
 
 1.) Assignment
 
--   This OrderApplication has been implemented as per the design of the UML Diagram "SimpleOrderClass
-	Diagram" and Sequence Diagram "SimpleOrderSequenceDiagram" that were included for Assignment #4.
--   The "SimpleOrderClassDiagram" was modified during the course of coding the program to account for 
-	logical changes.
+-   This OrderApplication has been implemented as per the design of the UML Diagram "SimpleOrderClassDiagram" and Sequence Diagram "SimpleOrderSequenceDiagram" that were included for Assignment #4.
+-   The "SimpleOrderClassDiagram" was modified during the course of coding the program to account for logical changes.
 	
 	The changes to the classes in "SimpleOrderClassDiagram" are as follows (getter and setter methods 
 	were added by default):
