@@ -14,8 +14,7 @@ GENERAL USAGE NOTES
 -   This OrderApplication has been implemented as per the design of the UML Diagram "SimpleOrderClassDiagram" and Sequence Diagram "SimpleOrderSequenceDiagram" that were included for Assignment #4.
 -   The "SimpleOrderClassDiagram" was modified during the course of coding the program to account for logical changes.
 	
-	The changes to the classes in "SimpleOrderClassDiagram" are as follows (getter and setter methods 
-	were added by default):
+	The changes to the classes in "SimpleOrderClassDiagram" are as follows (getter and setter methods were added by default):
 
 		1.  Class Product
 			-   Now includes an argument constructor for ease of use.
@@ -49,13 +48,14 @@ GENERAL USAGE NOTES
 			-   Includes an argument constructor for ease of use.
 			
 		7.  Class OrderApplication
-			-   Updated to include the public method checkoutCustomer to generalize the 
-			process of processing a customer's payment.
+			-   Updated to include the public method checkoutCustomer to generalize 
+			the process of processing a customer's payment.
 			
 		8. Class ProductCatalogue
 			-   Now changed to a list of Products created and destroyed in main.
 			-   This was done under the logic that the Product Catalogue shouldn't be 
-			modified in main as a real product catalogue shouldn't be modified by the system that uses it.
+			modified in main as a real product catalogue shouldn't be modified by the 
+			system that uses it.
 	
 2.) Requirements
 	
