@@ -1,5 +1,4 @@
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
@@ -36,10 +35,11 @@ public class OrderApplication {
 			{
 				if (scanIn.hasNextLine() == true)
 				{
-					name = scanIn.next().replaceAll("\\n", "");
-					price = Double.parseDouble(scanIn.next().replaceAll("\\n", ""));
-					productID = Integer.parseInt(scanIn.next().replaceAll("\\n", ""));
-
+					name = scanIn.next();
+					price = Double.parseDouble(scanIn.next());
+					productID = Integer.parseInt(scanIn.next());
+					scanIn.nextLine();
+					
 					products.add(new Product(name, price, productID));
 				}
 			}
