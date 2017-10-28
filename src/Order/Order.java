@@ -28,7 +28,7 @@ public class Order {
 	
 	/**
 	 * @param orderList
-	 * 		the List of OrderLines in the Order, may contain zero to many Products
+	 * 		the List of OrderLines in the Order, may contain zero to One Product in each line
 	 * @param customer
 	 * 		the Customer who created this Order
 	 * @param dateReceived
