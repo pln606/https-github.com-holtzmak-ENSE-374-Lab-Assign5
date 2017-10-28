@@ -143,10 +143,12 @@ public class OrderApplication {
 		System.out.println("Your order total comes to: $" + formatter.format(price));
 
 		if (customer.getClass().equals(PersonalCustomer.class)) {
+			// Confirms the type of Customer using polymorphism
 			System.out.println("Paying with credit card number: " + ((PersonalCustomer) customer).getCreditCardNumber());
 		} 
 
 		if (customer.getClass().equals(CorporateCustomer.class)) {
+			// Confirms the type of Customer using polymorphism
 			System.out.println("Sending invoice to: " + ((CorporateCustomer) customer).getContactName());
 		}
 
