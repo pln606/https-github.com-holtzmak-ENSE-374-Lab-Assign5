@@ -1,3 +1,15 @@
+/*
+ * Customer.java
+ *
+ * DESCRIPTION:
+ * Class Customer for Lab Assignment 4
+ *
+ * ENSE 374-092 Lab Assignment 4
+ * 
+ * @author Kelly Holtzman
+ * I.D.: 200366225
+ */
+
 package Customer;
 
 import java.util.LinkedList;
@@ -5,12 +17,28 @@ import java.util.LinkedList;
 import Order.Order;
 
 public class Customer {
+	/* Class Customer holds the variables 
+	 * for a Customer.
+	 */
 	
 	LinkedList<Order> orders = new LinkedList<Order>();
 	private String name;
 	private String address;
 	private float creditRating;
 	private float discountRating;
+	
+	/**
+	 * @param orders
+	 * 		the list of the Customer's orders, may be separate from one another
+	 * @param name
+	 * 		the Customer's name
+	 * @param address
+	 * 		the Customer's address
+	 * @param creditRating
+	 * 		the Customer's credit rating
+	 * @param discountRating
+	 * 		the Cutomer's discount rating, if any
+	 **/
 	
 	public Customer(String name, String address, float creditRating, float discountRating) {
 		setName(name);
