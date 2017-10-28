@@ -20,7 +20,7 @@ GENERAL USAGE NOTES
 			-   Now includes an argument constructor for ease of use.
 		
 		2.  Class OrderLine
-			-   No changes were made.
+			-   Also includes an argument constructor for ease of use.
 			
 		3.  Class Order
 			-   Now includes a list of OrderLines under the logic that an order may 
@@ -56,6 +56,7 @@ GENERAL USAGE NOTES
 			-   This was done under the logic that the Product Catalogue shouldn't be 
 			modified in main as a real product catalogue shouldn't be modified by the 
 			system that uses it.
+			-   See further notes in the included SimpleOrderClassDiagram.pdf
 	
 2.) Requirements
 	
