@@ -1,3 +1,15 @@
+/*
+ * Order.java
+ *
+ * DESCRIPTION:
+ * Class Order for Lab Assignment 4
+ *
+ * ENSE 374-092 Lab Assignment 4
+ * 
+ * @author Kelly Holtzman
+ * I.D.: 200366225
+ */
+
 package Order;
 
 import Customer.Customer;
@@ -5,12 +17,27 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class Order {
+	/* Class Order holds the variables for an Order
+	 */
 	
 	LinkedList<OrderLine> orderList = new LinkedList<OrderLine>();
 	private Customer customer;
 	private Date dateReceived;
 	private Double price;
 	private int orderID;
+	
+	/**
+	 * @param orderList
+	 * 		the List of OrderLines in the Order, may contain zero to many Products
+	 * @param customer
+	 * 		the Customer who created this Order
+	 * @param dateReceived
+	 * 		the Date the Order was received for processing
+	 * @param price
+	 * 		the total Price of the Order and all it's OrderLines
+	 * @param orderID
+	 * 		the ID of the Order for tracking purposes
+	 **/
 	
 	public Order(Product product, int quantity, Customer customer) {
 		OrderLine orderline = new OrderLine(product, product.getPrice(), quantity);
@@ -59,7 +86,7 @@ public class Order {
 	}
 	
 	public Double calculatePrice() {
-		setPrice(0.00);
+		setPrice(0.00);    //Initializes variables for calculation, in case of error
 		Double productPrice = 0.00;
 		int productQuantity = 0;
 		
