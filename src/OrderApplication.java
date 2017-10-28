@@ -1,23 +1,41 @@
+/*
+ * OrderApplication.java
+ *
+ * DESCRIPTION:
+ * Class OrderApplication for Lab Assignment 4
+ *
+ * ENSE 374-092 Lab Assignment 4
+ * 
+ * @author Kelly Holtzman
+ * I.D.: 200366225
+ */
+
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Random;
+import java.util.Date;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Random;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import Customer.Customer;
-import Customer.PersonalCustomer;
-import Customer.CorporateCustomer;
-import Order.Order;
-import Order.Product;
-import Order.OrderLine;
+import Customer.*;
+import Order.*;
 
 
 public class OrderApplication {
+	/* Class OrderApplication imports a list of Products, the productCatalogue, through 
+	 * importCatalogue. The OrderApplication then stores Products from the productCatalogue into OrderLines 
+	 * of a Customer's Order made by createOrder, depending on the productID the Customer is searching for.
+	 * 
+	 * Class OrderApplication will then proceed to checkoutCustomer, depending on the Customer, will 
+	 * proceed to place the Order(s) using the Customer's information. An orderID is generated for all
+	 * Orders placed at the same time.
+	 */
 
 	private static boolean importCatalogue(LinkedList<Product> productCatalogue) throws IOException {
 
@@ -39,7 +57,7 @@ public class OrderApplication {
 					name = scanIn.next();
 					price = Double.parseDouble(scanIn.next());
 					productID = Integer.parseInt(scanIn.next());
-					scanIn.nextLine();
+					scanIn.nextLine();    // Consumes extra line break as per pattern
 
 					productCatalogue.add(new Product(name, price, productID));
 				}
@@ -75,16 +93,16 @@ public class OrderApplication {
 		System.out.println("How many orders would you like to place?");
 		numOrders = Integer.parseInt(scanIn.next());
 
-		for (int j = 0; j < numOrders; j++) {
+		for (int i = 0; i < numOrders; i++) {
 			System.out.println("Please enter the productID you are looking for: ");
 			productID = scanIn.nextInt();
 
 			System.out.println("Please enter amount of products you are looking for: ");
 			quantity = scanIn.nextInt();
 
-			for (int i = 0; i < productCatalogue.size(); i++) {
-				if (productCatalogue.get(i).getProductID() == productID) {
-					Order newOrder = new Order(productCatalogue.get(i), quantity, customer);
+			for (int j = 0; j < productCatalogue.size(); j++) {
+				if (productCatalogue.get(j).getProductID() == productID) {
+					Order newOrder = new Order(productCatalogue.get(j), quantity, customer);
 					customer.createOrder(newOrder);
 
 				}
@@ -112,6 +130,10 @@ public class OrderApplication {
 		for (int i = 0; i < numCustOrders.size(); i++) {
 			LinkedList<OrderLine> numCustOrderLines = numCustOrders.get(i).getOrderLine();
 			System.out.println("Name: " + numCustOrderLines.get(0).getProduct().getName() + " Product ID: " + numCustOrderLines.get(0).getProduct().getProductID() + " Quantity: " + numCustOrderLines.get(0).getQuantity());
+			
+			/* As the program is hard coded to only have one OrderLine per Order, the expected
+			 * index of every OrderLine is only [0].
+			 */
 		}
 
 		for (int i = 0; i < numCustOrders.size(); i++) {
@@ -129,13 +151,13 @@ public class OrderApplication {
 		}
 
 		for (int i = 0; i < numCustOrders.size(); i++) {
-			numCustOrders.get(i).setOrderID(randomInt);
+			numCustOrders.get(i).setOrderID(randomInt);    // Generated a random orderID
 		}
 
 		System.out.println("Your order's ID is: " + randomInt);
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Date date = new Date();
+		Date date = new Date();    // Use's the Customer's current time for placement of Order
 
 		for (int i = 0; i < numCustOrders.size(); i++) {
 			numCustOrders.get(i).setDateReceived(date);
