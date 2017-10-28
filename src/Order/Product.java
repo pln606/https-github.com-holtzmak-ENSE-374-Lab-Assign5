@@ -1,10 +1,33 @@
+/*
+ * Product.java
+ *
+ * DESCRIPTION:
+ * Class Product for Lab Assignment 4
+ *
+ * ENSE 374-092 Lab Assignment 4
+ * 
+ * @author Kelly Holtzman
+ * I.D.: 200366225
+ */
+
 package Order;
 
 public class Product {
+	/* Class Product holds the variables for a Product
+	 */
 	
 	private String name;
 	private Double price;
 	private int productID;
+	
+	/**
+	 * @param name
+	 * 		the name of the Product
+	 * @param price
+	 * 		the price of the Product
+	 * @param productID
+	 * 		the product ID of the Product
+	 **/
 	
 	public Product(String name, Double price, int productID) {
 		setName(name);
