@@ -1,10 +1,33 @@
+/*
+ * OrderLine.java
+ *
+ * DESCRIPTION:
+ * Class OrderLine for Lab Assignment 4
+ *
+ * ENSE 374-092 Lab Assignment 4
+ * 
+ * @author Kelly Holtzman
+ * I.D.: 200366225
+ */
+
 package Order;
 
 public class OrderLine {
+	/* Class OrderLine holds the variables for an OrderLine
+	 */
 	
 	private Product product;
 	private Double price;
 	private int quantity;
+	
+	/**
+	 * @param product
+	 * 		the Product in the OrderLine
+	 * @param price
+	 * 		the price of the Product in the OrderLine
+	 * @param quantity
+	 * 		the quantity of a Product in the OrderLine
+	 **/
 	
 	public OrderLine(Product product, Double price, int quantity) {
 		setProduct(product);
