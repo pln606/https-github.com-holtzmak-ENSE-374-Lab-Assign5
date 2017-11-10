@@ -102,7 +102,8 @@ public class OrderApplication {
 
 			for (int j = 0; j < productCatalogue.size(); j++) {
 				if (productCatalogue.get(j).getProductID() == productID) {
-					Order newOrder = new Order(productCatalogue.get(j), quantity, customer);
+					OrderLine newOrderLine = new OrderLine(productCatalogue.get(j), productCatalogue.get(j).getPrice(), quantity);
+					Order newOrder = new Order(newOrderLine, customer);
 					customer.createOrder(newOrder);
 
 				}
