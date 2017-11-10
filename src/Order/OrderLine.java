@@ -2,9 +2,9 @@
  * OrderLine.java
  *
  * DESCRIPTION:
- * Class OrderLine for Lab Assignment 4
+ * Class OrderLine for Lab Assignment 5
  *
- * ENSE 374-092 Lab Assignment 4
+ * ENSE 374-092 Lab Assignment 5
  * 
  * @author Kelly Holtzman
  * I.D.: 200366225

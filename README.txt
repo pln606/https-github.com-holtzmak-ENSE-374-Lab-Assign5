@@ -1,9 +1,9 @@
-ENSE 374-092 Lab Assignment #4, “Read Me” file for Documentation  10/27/2017
+ENSE 374-092 Lab Assignment #5, “Read Me” file for Documentation  11/10/2017
 
 REPOSITORY NOTES
 ————————————————
 
--   The entirety of Assignment #4 files are located in the master branch
+-   The entirety of Assignment #5 files are located in the master branch
 -   The Product list is implemented as a list of Pharmaceuticals, found in the productList.csv file.
 
 GENERAL USAGE NOTES
@@ -28,9 +28,9 @@ GENERAL USAGE NOTES
 			OrderLine of an order may be changed, but the products in the Product 
 			Catalogue should not. The Products list implemented in OrderApplication
 			is the list used by the program to be the ProductCatalogue.
-			-   Includes an argument constructor to create an OrderLine, and to 
-			add that OrderLine to the Order.
+			-   Includes an argument constructor to create an Order for a customer.
 			-   Includes a variable Customer to link the order to a specific Customer.
+			-   Added the modifyOrder method as per Assign5
 			
 		4.  Class PersonalCustomer
 			-   Now includes an argument constructor to create an instance of a 

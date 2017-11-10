@@ -2,9 +2,9 @@
  * OrderApplication.java
  *
  * DESCRIPTION:
- * Class OrderApplication for Lab Assignment 4
+ * Class OrderApplication for Lab Assignment 5
  *
- * ENSE 374-092 Lab Assignment 4
+ * ENSE 374-092 Lab Assignment 5
  * 
  * @author Kelly Holtzman
  * I.D.: 200366225
@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.Date;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -82,6 +81,9 @@ public class OrderApplication {
 		int productID = -1;
 		int quantity = -1;
 		int numOrders = 0;
+		char choice = 0;
+		
+		Order newOrder = new Order(customer);
 
 		System.out.println("Welcome to the Order System.");
 		System.out.println("Below is the list of products in the catalogue.");
@@ -91,7 +93,7 @@ public class OrderApplication {
 		}
 
 		System.out.println("How many orders would you like to place?");
-		numOrders = Integer.parseInt(scanIn.next());
+		numOrders = scanIn.nextInt();
 
 		for (int i = 0; i < numOrders; i++) {
 			System.out.println("Please enter the productID you are looking for: ");
@@ -102,12 +104,69 @@ public class OrderApplication {
 
 			for (int j = 0; j < productCatalogue.size(); j++) {
 				if (productCatalogue.get(j).getProductID() == productID) {
-					Order newOrder = new Order(productCatalogue.get(j), quantity, customer);
-					customer.createOrder(newOrder);
-
+					OrderLine newOrderLine = new OrderLine(productCatalogue.get(j), productCatalogue.get(j).getPrice(), quantity);
+					newOrder.setOrderLine(newOrderLine);
 				}
 			}
+			
+			customer.createOrder(newOrder);
 		}
+		
+		LinkedList<Order> numCustOrders = customer.getOrders();
+		System.out.println("The products placed for order are:");
+		
+		for (int i = 0; i < numCustOrders.size(); i++) {
+			LinkedList<OrderLine> numCustOrderLines = numCustOrders.get(i).getOrderLine();
+			System.out.println("Name: " + numCustOrderLines.get(i).getProduct().getName() + " Product ID: " + numCustOrderLines.get(i).getProduct().getProductID() + " Quantity: " + numCustOrderLines.get(i).getQuantity());
+		}
+		
+		System.out.println("Before proceeding to checkout, do you need to change you order? (y/n)");
+		choice = scanIn.next().charAt(0);
+		
+		switch (choice)
+		{
+			case 'y':
+				System.out.println("What would you like to change? Remove an order (r) or change how many have been ordered (c) ");
+				choice = scanIn.next().charAt(0);
+				
+				switch (choice)
+				{
+					case 'r':
+						System.out.println("What is the ID of the product you would like to remove?");
+						productID = scanIn.nextInt();
+						
+						for (int i = 0; i < numCustOrders.size(); i++) {
+							if (numCustOrders.get(i).modifyOrder(productID) == true) {
+								System.out.println("The product has been removed.");
+							}
+						}
+						
+						break;
+					case 'c':
+						System.out.println("What is the ID of the product you would like to change?");
+						productID = scanIn.nextInt();
+						System.out.println("What amount would you like to order?");
+						quantity = scanIn.nextInt();
+						
+						for (int i = 0; i < numCustOrders.size(); i++) {
+							if (numCustOrders.get(i).modifyOrder(productID, quantity) == true) {
+								System.out.println("The product quantity has been changed.");
+							}
+						}
+						
+						break;
+					default:
+						System.out.println("You have cancelled changing your order.");
+						break;
+						
+				}
+				break;
+			default:
+				System.out.println("You have chosen not to change anything.");
+				break;
+				
+		}
+		
 
 		scanIn.close();
 		return true;
@@ -128,16 +187,16 @@ public class OrderApplication {
 		System.out.println("The products placed for order are:");
 		
 		for (int i = 0; i < numCustOrders.size(); i++) {
-			LinkedList<OrderLine> numCustOrderLines = numCustOrders.get(i).getOrderLine();
-			System.out.println("Name: " + numCustOrderLines.get(0).getProduct().getName() + " Product ID: " + numCustOrderLines.get(0).getProduct().getProductID() + " Quantity: " + numCustOrderLines.get(0).getQuantity());
-			
-			/* As the program is hard coded to only have one OrderLine per Order, the expected
-			 * index of every OrderLine is only [0].
-			 */
+			if (numCustOrders.get(i).getOrderLine() != null && numCustOrders.get(i).getOrderLine().isEmpty() == false) {
+				LinkedList<OrderLine> numCustOrderLines = numCustOrders.get(i).getOrderLine();
+				System.out.println("Name: " + numCustOrderLines.get(i).getProduct().getName() + " Product ID: " + numCustOrderLines.get(i).getProduct().getProductID() + " Quantity: " + numCustOrderLines.get(i).getQuantity());
+			}
 		}
 
 		for (int i = 0; i < numCustOrders.size(); i++) {
-			price = price + numCustOrders.get(i).calculatePrice();
+			if (numCustOrders.get(i) != null) {
+				price = price + numCustOrders.get(i).calculatePrice();
+			}
 		}
 
 		System.out.println("Your order total comes to: $" + formatter.format(price));
@@ -153,7 +212,9 @@ public class OrderApplication {
 		}
 
 		for (int i = 0; i < numCustOrders.size(); i++) {
-			numCustOrders.get(i).setOrderID(randomInt);    // Generated a random orderID
+			if (numCustOrders.get(i) != null) {
+				numCustOrders.get(i).setOrderID(randomInt);    // Generated a random orderID
+			}
 		}
 
 		System.out.println("Your order's ID is: " + randomInt);
@@ -162,7 +223,9 @@ public class OrderApplication {
 		Date date = new Date();    // Use's the Customer's current time for placement of Order
 
 		for (int i = 0; i < numCustOrders.size(); i++) {
-			numCustOrders.get(i).setDateReceived(date);
+			if (numCustOrders.get(i) != null) {
+				numCustOrders.get(i).setDateReceived(date);
+			}
 		}
 
 		System.out.println("Your order was placed on: " + dateFormat.format(date));
