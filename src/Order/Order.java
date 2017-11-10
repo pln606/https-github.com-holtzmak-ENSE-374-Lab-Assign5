@@ -39,8 +39,7 @@ public class Order {
 	 * 		the ID of the Order for tracking purposes
 	 **/
 	
-	public Order(Product product, int quantity, Customer customer) {
-		OrderLine orderline = new OrderLine(product, product.getPrice(), quantity);
+	public Order(OrderLine orderline, Customer customer) {
 		setOrderLine(orderline);
 		setCustomer(customer);
 	}
@@ -97,7 +96,7 @@ public class Order {
 			setPrice(getPrice() + (productPrice * productQuantity));
 		}
 		
-		setPrice(getPrice() * getCustomer().getDiscountRating());
+		setPrice(getPrice() * (1-getCustomer().getDiscountRating()));
 		
 		return getPrice();
 	}
