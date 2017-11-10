@@ -2,9 +2,9 @@
  * CorporateCustomer.java
  *
  * DESCRIPTION:
- * Class CorporateCustomer for Lab Assignment 4
+ * Class CorporateCustomer for Lab Assignment 5
  *
- * ENSE 374-092 Lab Assignment 4
+ * ENSE 374-092 Lab Assignment 5
  * 
  * @author Kelly Holtzman
  * I.D.: 200366225
