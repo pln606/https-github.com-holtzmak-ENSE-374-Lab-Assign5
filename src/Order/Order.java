@@ -2,9 +2,9 @@
  * Order.java
  *
  * DESCRIPTION:
- * Class Order for Lab Assignment 4
+ * Class Order for Lab Assignment 5
  *
- * ENSE 374-092 Lab Assignment 4
+ * ENSE 374-092 Lab Assignment 5
  * 
  * @author Kelly Holtzman
  * I.D.: 200366225
@@ -14,18 +14,19 @@ package Order;
 
 import Customer.Customer;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Order {
 	/* Class Order holds the variables for an Order
 	 */
-	
+
 	LinkedList<OrderLine> orderList = new LinkedList<OrderLine>();
 	private Customer customer;
 	private Date dateReceived;
 	private Double price;
 	private int orderID;
-	
+
 	/**
 	 * @param orderList
 	 * 		the List of OrderLines in the Order, may contain zero to One Product in each line
@@ -38,20 +39,19 @@ public class Order {
 	 * @param orderID
 	 * 		the ID of the Order for tracking purposes
 	 **/
-	
-	public Order(OrderLine orderline, Customer customer) {
-		setOrderLine(orderline);
+
+	public Order(Customer customer) {
 		setCustomer(customer);
 	}
-	
+
 	public void setOrderLine(OrderLine orderline) {
 		orderList.add(orderline);
 	}
-	
+
 	public LinkedList<OrderLine> getOrderLine() {
 		return orderList;
 	}
-	
+
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
@@ -59,45 +59,68 @@ public class Order {
 	public Customer getCustomer() {
 		return customer;
 	}
-	
+
 	public void setDateReceived(Date dateReceived) {
 		this.dateReceived = dateReceived;
 	}
-	
+
 	public Date getDateReceived() {
 		return dateReceived;
 	}
-	
+
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
+
 	public Double getPrice() {
 		return price;
 	}
-	
+
 	public void setOrderID(int orderID) {
 		this.orderID = orderID;
 	}
-	
+
 	public int getOrderID() {
 		return orderID;
 	}
-	
+
 	public Double calculatePrice() {
 		setPrice(0.00);    //Initializes variables for calculation, in case of error
 		Double productPrice = 0.00;
 		int productQuantity = 0;
-		
+
 		for (int i = 0; i < orderList.size(); i++) {
 			productPrice = orderList.get(i).getPrice();
 			productQuantity = orderList.get(i).getQuantity();
-			
+
 			setPrice(getPrice() + (productPrice * productQuantity));
 		}
-		
+
 		setPrice(getPrice() * (1-getCustomer().getDiscountRating()));
-		
+
 		return getPrice();
+	}
+	
+	public boolean modifyOrder(int productID) {		
+		Iterator<OrderLine> listIterator = orderList.iterator();
+		// Using iterator to modify the list size as well
+		while(listIterator.hasNext()) {
+			if (listIterator.next().getProduct().getProductID() == productID) { 
+				listIterator.remove();
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean modifyOrder(int productID, int quantity) {
+		for (int i = 0; i < orderList.size(); i++) {
+			if (orderList.get(i).getProduct().getProductID() == productID) {
+				orderList.get(i).setQuantity(quantity);
+				return true;
+			}
+		}
+		return false;
 	}
 }
